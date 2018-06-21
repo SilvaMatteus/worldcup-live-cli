@@ -55,13 +55,13 @@ def print_match(info, is_live=False):
     goals_home = info['home_team']['goals']
     goals_away = info['away_team']['goals']
 
-    print '-' * SCREEN_WIDTH,
+    print Fore.BLUE + '-' * SCREEN_WIDTH,
     print
     print info['home_team']['code'],
-    print Fore.GREEN + Style.BRIGHT + SOCCER_BALL * goals_home,
-    print' ' * (SCREEN_WIDTH/2 - goals_home -6),
-    print 'x ' + ' ' * (SCREEN_WIDTH/2 - goals_away -6),
-    print Fore.GREEN + Style.BRIGHT + SOCCER_BALL * goals_away,
+    print Fore.GREEN + Style.BRIGHT + (SOCCER_BALL + ' ') * goals_home,
+    print' ' * (SCREEN_WIDTH/2 - goals_home * 2 - 6),
+    print 'x ' + ' ' * (SCREEN_WIDTH/2 - goals_away * 2 - 6),
+    print Fore.GREEN + Style.BRIGHT + (SOCCER_BALL + ' ')  * goals_away,
     print info['away_team']['code']
 
     if info['home_team_statistics'] and info['away_team_statistics']:
@@ -70,9 +70,9 @@ def print_match(info, is_live=False):
         if home_ball_possession and away_ball_possession:
             home_ball_possession = '%02.d' % int(home_ball_possession)
             away_ball_possession = '%02.d' % int(away_ball_possession)
-            print home_ball_possession + ' ' * (SCREEN_WIDTH/2 -12) + ' - Ball Possession - ' + ' ' * (SCREEN_WIDTH/2 -12) + away_ball_possession
+            print Fore.BLUE + '-' * (SCREEN_WIDTH/2 -13) + ' ' + Fore.GREEN + home_ball_possession +' - Ball Possession - ' + away_ball_possession + Fore.BLUE + ' ' + '-' * (SCREEN_WIDTH/2 -13)
     if info['status'] != 'in progress':
-        print 'Match Status: %s' % info['status']
+        print 'Match Status:' + Fore.MAGENTA + ' %s' % info['status']
     else:
         print Fore.GREEN + Style.DIM + u"\U0001f557" + ' %s' % info['time']
     if info['datetime']:
@@ -93,13 +93,9 @@ def print_match(info, is_live=False):
             print Fore.CYAN + away_event['time'] + ' ' + away_event['player']
         
         # TODO: print the rest of the details.
-            
- 
-#  u'player': u'Luis SUAREZ',
-#     u'time': u"23'",
-    print '-' * SCREEN_WIDTH,
-    print
-    
+
+    print '\n' + ' ' * (SCREEN_WIDTH/2-1) + '···\n'
+
 def get_live_match(lock):
     while True:
         info = []
