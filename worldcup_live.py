@@ -74,7 +74,7 @@ def print_match(info, is_live=False):
     if info['status'] != 'in progress':
         print 'Match Status: %s' % info['status']
     else:
-        print u"\U0001f557" + ' Current Time: %s' % info['time']
+        print Fore.GREEN + Style.DIM + u"\U0001f557" + ' %s' % info['time']
     if info['datetime']:
         print u"\U0001f557" + ' Start time: %s' % info['datetime']
     
@@ -83,8 +83,20 @@ def print_match(info, is_live=False):
     if info['status'] != 'future':
         print SOCCER_BALL + '  Detailed Goals Information:'
         #TODO: print details.
-        goal_events_home = [event for event in info['home_team_events'] if event['type_of_event'] == 'goal']
-        goal_events_away = [event for event in info['away_team_events'] if event['type_of_event'] == 'goal']
+        goal_events_home = [event for event in info['home_team_events'] if event['type_of_event'] == 'goal' or event['type_of_event'] == 'goal-penalty']
+        goal_events_away = [event for event in info['away_team_events'] if event['type_of_event'] == 'goal' or event['type_of_event'] == 'goal-penalty']
+        num_events_home = len(goal_events_home)
+        num_events_away = len(goal_events_away)
+        for home_event, away_event in zip(goal_events_home, goal_events_away):
+            print Fore.CYAN + home_event['player'] + ' ' + home_event['time'],
+            print Fore.CYAN + u"\U0001f557",
+            print Fore.CYAN + away_event['time'] + ' ' + away_event['player']
+        
+        # TODO: print the rest of the details.
+            
+ 
+#  u'player': u'Luis SUAREZ',
+#     u'time': u"23'",
     print '-' * SCREEN_WIDTH,
     print
     
