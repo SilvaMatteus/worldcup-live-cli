@@ -79,12 +79,13 @@ def print_match(info, is_live=False):
 def get_live_match(lock):
     while True:
         sleep(UPDATE_TIME)
-        # info = json.loads(requests.get('http://worldcup.sfg.io/matches/current').text)[0]
-        info = json.loads('[{"venue":"Moscow","location":"Luzhniki Stadium","status":"in progress","time":"1\'","fifa_id":"300331511","home_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Portugal"},"away_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Morocco"},"datetime":"2018-06-20T12:00:00Z","last_event_update_at":"2018-06-20T12:01:04Z","last_score_update_at":"2018-06-20T12:01:19Z","home_team":{"country":"Portugal","code":"POR","goals":0},"away_team":{"country":"Morocco","code":"MAR","goals":0},"winner":null,"winner_code":null,"home_team_events":[],"away_team_events":[]}]')[0]
+        info = json.loads(requests.get('http://worldcup.sfg.io/matches/current').text)
+        #info = json.loads('[{"venue":"Moscow","location":"Luzhniki Stadium","status":"in progress","time":"1\'","fifa_id":"300331511","home_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Portugal"},"away_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Morocco"},"datetime":"2018-06-20T12:00:00Z","last_event_update_at":"2018-06-20T12:01:04Z","last_score_update_at":"2018-06-20T12:01:19Z","home_team":{"country":"Portugal","code":"POR","goals":0},"away_team":{"country":"Morocco","code":"MAR","goals":0},"winner":null,"winner_code":null,"home_team_events":[],"away_team_events":[]}]')[0]
         if not info:
+            sleep(60)
             continue
         lock.acquire()
-        print_match(info, is_live=True)
+        print_match(info[0], is_live=True)
         lock.release()
         
 
