@@ -40,6 +40,7 @@ def print_many_matches(matches, msg=None):
 
 def print_match(info, is_live=False):
     if is_live:
+        clear_screen()
         print '\n' + u"\U0001f4fa" + ' LIVE ' + u"\U0001f557" + ' every ' + str(UPDATE_TIME) + ' seconds.'
     goals_home = info['home_team']['goals']
     goals_away = info['away_team']['goals']
@@ -83,7 +84,6 @@ def get_live_match(lock):
         if not info:
             continue
         lock.acquire()
-        print type(info)
         print_match(info, is_live=True)
         lock.release()
         
