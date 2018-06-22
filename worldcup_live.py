@@ -79,7 +79,7 @@ def print_match(info, is_live=False):
 
     if info['datetime']:
         start_time = dateutil.parser.parse(info['datetime'])
-        start_time += timedelta(TIME_DIFFERENCE)
+        start_time += timedelta(hours=TIME_DIFFERENCE)
         print Fore.MAGENTA + u"\U0001f4c6" + ' %s' % start_time.strftime('%Y-%m-%d'),
         print Fore.MAGENTA + u"\U0001f557" + ' %s' % start_time.strftime('%H:%M')
     
@@ -118,7 +118,7 @@ def get_live_match(lock):
         info = []
         try:
             info = json.loads(requests.get('http://worldcup.sfg.io/matches/current').text)
-            #info = json.loads('[{"venue":"Moscow","location":"Luzhniki Stadium","status":"in progress","time":"1\'","fifa_id":"300331511","home_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Portugal"},"away_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Morocco"},"datetime":"2018-06-20T12:00:00Z","last_event_update_at":"2018-06-20T12:01:04Z","last_score_update_at":"2018-06-20T12:01:19Z","home_team":{"country":"Portugal","code":"POR","goals":0},"away_team":{"country":"Morocco","code":"MAR","goals":0},"winner":null,"winner_code":null,"home_team_events":[],"away_team_events":[]}]')
+            #info = json.loads('[{"venue":"St. Petersburg","location":"Saint Petersburg Stadium","status":"in progress","time":"half-time","fifa_id":"300331540","home_team_statistics":{"attempts_on_goal":7,"on_target":1,"off_target":6,"blocked":0,"woodwork":0,"corners":1,"offsides":3,"ball_possession":64,"pass_accuracy":91,"num_passes":359,"passes_completed":325,"distance_covered":52,"balls_recovered":20,"tackles":5,"clearances":3,"yellow_cards":0,"red_cards":0,"fouls_committed":6,"country":"Brazil"},"away_team_statistics":{"attempts_on_goal":3,"on_target":0,"off_target":3,"blocked":0,"woodwork":0,"corners":0,"offsides":2,"ball_possession":36,"pass_accuracy":74,"num_passes":167,"passes_completed":123,"distance_covered":55,"balls_recovered":14,"tackles":6,"clearances":12,"yellow_cards":0,"red_cards":0,"fouls_committed":9,"country":"Costa Rica"},"datetime":"2018-06-22T15:00:00Z","last_event_update_at":null,"last_score_update_at":"2018-06-22T12:55:02Z","home_team":{"country":"Brazil","code":"BRA","goals":0},"away_team":{"country":"Costa Rica","code":"CRC","goals":0},"winner":null,"winner_code":null,"home_team_events":[],"away_team_events":[]}]')
         except:
             print Fore.RED + 'Ops! I can\'t connect to API =\'(' 
         if not info:
