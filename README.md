@@ -5,7 +5,7 @@
 
 World Cup live on terminal.
 
-# Running
+## Running
 
 Install requirements.
 
@@ -14,3 +14,24 @@ Install requirements.
 Then
 
 `python worldcup_live.py`
+
+**Available commands:**
+
+- today
+- tomorrow
+- c _clear screen_
+- h _show help_
+
+## ROADMAP
+
+**Match information:**
+
+- Attempts on goal;
+- Attempts on target;
+- Red cards;
+- Yellow cards.
+
+**Groups information:**
+
+- Data on screen;
+- Cosmetics.

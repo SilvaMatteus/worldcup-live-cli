@@ -19,7 +19,7 @@ import sys
 import requests
 import json
 
-NOT_RECOGNIZE = 'I\'m sorry, I do not recognize this command.'
+NOT_RECOGNIZE = Fore.RED + 'I\'m sorry, I do not recognize this command.'
 SOCCER_BALL = u"\U000026bd"
 SCREEN_WIDTH = 65 # Must be odd.
 UNCHECKED_BOX = u"\U00002b1c"
@@ -29,11 +29,10 @@ ASCII_ART = '' + '╦ ╦┌─┐┬─┐┬  ┌┬┐  ╔═╗┬ ┬┌�
 ASCII_ART += '0.1\nhttps://github.com/silvamatteus/worldcup-live-cli'
 
 def print_help():
-    print '%s%s%s%s%s' % (
-        ' By @silvamatteus.\n',
-        'Available commands: today, tomorrow.\n',
-        'Live updates start when a match starts.\n'
-        'Made with ', u"\U00002764",)
+    print Fore.YELLOW + '%s%s%s%s%s' % (
+        'Available commands: today, tomorrow, c, h.\n',
+        'Live updates start when a match starts.\n',
+        'Made with ', u"\U00002764", ' By @silvamatteus.\n',)
 
 def clear_screen():
     print("\033[H\033[J")
@@ -43,7 +42,7 @@ def print_art():
 
 def print_many_matches(matches, msg=None):
     if msg:
-        print msg
+        print ' ' * (SCREEN_WIDTH/2 - len(msg)/2) + Style.DIM + Back.WHITE + Fore.CYAN + u"\U0001f4c6" + ' ' + msg
     for match in matches:
         print_match(match)
 
@@ -142,7 +141,7 @@ def interact(lock):
                 print Fore.RED + 'Ops! I can\'t connect to API =\'('
 
             lock.acquire()
-            print_many_matches(todays_matches, msg=u"\U0001f4c6" + ' Today\'s Matches:')
+            print_many_matches(todays_matches, msg='Today\'s Matches:')
             lock.release()
         elif command == 'tomorrow':
             tomorrow_matches = []
@@ -152,7 +151,7 @@ def interact(lock):
                 print Fore.RED + 'Ops! I can\'t connect to API =\'('
 
             lock.acquire()
-            print_many_matches(tomorrow_matches, msg=u"\U0001f4c6" + ' Tomorrow\'s Matches:')
+            print_many_matches(tomorrow_matches, msg='Tomorrow\'s Matches:')
             lock.release()
         elif command == 'c':
             clear_screen()
