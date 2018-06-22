@@ -81,18 +81,30 @@ def print_match(info, is_live=False):
     #TODO: print start time and current time.
     # Print goals.
     if info['status'] != 'future':
-        print SOCCER_BALL + '  Detailed Goals Information:'
+        print Fore.CYAN + ' ' * (SCREEN_WIDTH/2 -16) + '- ' + SOCCER_BALL + '  Detailed Goals Information -'
         #TODO: print details.
         goal_events_home = [event for event in info['home_team_events'] if event['type_of_event'] == 'goal' or event['type_of_event'] == 'goal-penalty']
         goal_events_away = [event for event in info['away_team_events'] if event['type_of_event'] == 'goal' or event['type_of_event'] == 'goal-penalty']
-        num_events_home = len(goal_events_home)
-        num_events_away = len(goal_events_away)
+        i_events_home = 0
+        i_events_away = 0
         for home_event, away_event in zip(goal_events_home, goal_events_away):
-            print Fore.CYAN + home_event['player'] + ' ' + home_event['time'],
-            print Fore.CYAN + u"\U0001f557",
-            print Fore.CYAN + away_event['time'] + ' ' + away_event['player']
-        
-        # TODO: print the rest of the details.
+            output = home_event['player'] + ' ' + home_event['time']
+            print Fore.CYAN  + output + ' ' * (SCREEN_WIDTH/2 - len(output)) + u"\U0001f557",
+            output = away_event['time'] + ' ' + away_event['player']
+            print Fore.CYAN + ' ' * (SCREEN_WIDTH/2 - len(output) -1) + output
+            i_events_home += 1
+            i_events_away += 1
+        while i_events_home < len(goal_events_home):
+            output = goal_events_home[i_events_home]['player'] + ' ' + goal_events_home[i_events_home]['time']
+            print Fore.CYAN  + output + ' ' * (SCREEN_WIDTH/2 - len(output)) + u"\U0001f557"
+            i_events_home += 1
+        while i_events_away < len(goal_events_away):
+            print Fore.CYAN + ' ' * (SCREEN_WIDTH/2) + u"\U0001f557",
+            output = goal_events_away[i_events_away]['time'] + ' ' + goal_events_away[i_events_away]['player']
+            print Fore.CYAN + ' ' * (SCREEN_WIDTH/2 - len(output) -1) + output
+
+            i_events_away += 1
+
 
     print '\n' + ' ' * (SCREEN_WIDTH/2-1) + '···\n'
 
@@ -101,9 +113,9 @@ def get_live_match(lock):
         info = []
         try:
             info = json.loads(requests.get('http://worldcup.sfg.io/matches/current').text)
+            #info = json.loads('[{"venue":"Moscow","location":"Luzhniki Stadium","status":"in progress","time":"1\'","fifa_id":"300331511","home_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Portugal"},"away_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Morocco"},"datetime":"2018-06-20T12:00:00Z","last_event_update_at":"2018-06-20T12:01:04Z","last_score_update_at":"2018-06-20T12:01:19Z","home_team":{"country":"Portugal","code":"POR","goals":0},"away_team":{"country":"Morocco","code":"MAR","goals":0},"winner":null,"winner_code":null,"home_team_events":[],"away_team_events":[]}]')
         except:
             print Fore.RED + 'Ops! I can\'t connect to API =\'(' 
-        #info = json.loads('[{"venue":"Moscow","location":"Luzhniki Stadium","status":"in progress","time":"1\'","fifa_id":"300331511","home_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Portugal"},"away_team_statistics":{"attempts_on_goal":null,"on_target":null,"off_target":null,"blocked":null,"woodwork":null,"corners":null,"offsides":null,"ball_possession":null,"pass_accuracy":null,"num_passes":null,"passes_completed":null,"distance_covered":null,"balls_recovered":null,"tackles":null,"clearances":null,"yellow_cards":null,"red_cards":null,"fouls_committed":null,"country":"Morocco"},"datetime":"2018-06-20T12:00:00Z","last_event_update_at":"2018-06-20T12:01:04Z","last_score_update_at":"2018-06-20T12:01:19Z","home_team":{"country":"Portugal","code":"POR","goals":0},"away_team":{"country":"Morocco","code":"MAR","goals":0},"winner":null,"winner_code":null,"home_team_events":[],"away_team_events":[]}]')[0]
         if not info:
             lock.acquire()
             clear_screen()
