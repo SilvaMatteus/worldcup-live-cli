@@ -84,7 +84,27 @@ def print_match(info, is_live=False):
         print Fore.MAGENTA + u"\U0001f557" + ' %s' % start_time.strftime('%H:%M')
     
     #TODO: print start time and current time.
-    # Print goals.
+    # Print goals and details.
+    if info['status'] != 'future':
+        home_attempts_on_goal = info['home_team_statistics']['attempts_on_goal']
+        home_on_target = info['home_team_statistics']['on_target']
+        away_attempts_on_goal = info['away_team_statistics']['attempts_on_goal']
+        away_on_target = info['away_team_statistics']['on_target']
+        if not home_attempts_on_goal: home_attempts_on_goal = 0
+        if not away_attempts_on_goal: away_attempts_on_goal = 0
+        if not home_on_target: home_on_target = 0
+        if not away_on_target: away_on_target = 0
+        
+        output = 'Attempts on goal / On target'
+        print Fore.BLUE + Style.BRIGHT + ' ' * ((SCREEN_WIDTH/2) - len(output)/2) + output
+        output = str(home_attempts_on_goal) + ' / ' + str(home_on_target) + '    -    ' + str(away_attempts_on_goal) + ' / ' + str(away_on_target)
+        print Fore.BLUE + Style.BRIGHT + ' ' * (SCREEN_WIDTH/2 - len(output)/2) + output
+
+        # Print Yellow cards.
+        #home_yellow_cards = info['home_team_statistics']['yellow_cards'] if if 'yellow_cards' in info['home_team_statistics'] else '0'
+        #away_yellow_cards = info['away_team_statistics']['yellow_cards'] if if 'yellow_cards' in info['away_team_statistics'] else '0'
+        
+
     if info['status'] != 'future':
         print Fore.CYAN + ' ' * (SCREEN_WIDTH/2 -16) + '- ' + SOCCER_BALL + '  Detailed Goals Information -'
         #TODO: print details.
@@ -117,8 +137,8 @@ def get_live_match(lock):
     while True:
         info = []
         try:
-            info = json.loads(requests.get('http://worldcup.sfg.io/matches/current').text)
-            #info = json.loads('[{"venue":"St. Petersburg","location":"Saint Petersburg Stadium","status":"in progress","time":"half-time","fifa_id":"300331540","home_team_statistics":{"attempts_on_goal":7,"on_target":1,"off_target":6,"blocked":0,"woodwork":0,"corners":1,"offsides":3,"ball_possession":64,"pass_accuracy":91,"num_passes":359,"passes_completed":325,"distance_covered":52,"balls_recovered":20,"tackles":5,"clearances":3,"yellow_cards":0,"red_cards":0,"fouls_committed":6,"country":"Brazil"},"away_team_statistics":{"attempts_on_goal":3,"on_target":0,"off_target":3,"blocked":0,"woodwork":0,"corners":0,"offsides":2,"ball_possession":36,"pass_accuracy":74,"num_passes":167,"passes_completed":123,"distance_covered":55,"balls_recovered":14,"tackles":6,"clearances":12,"yellow_cards":0,"red_cards":0,"fouls_committed":9,"country":"Costa Rica"},"datetime":"2018-06-22T15:00:00Z","last_event_update_at":null,"last_score_update_at":"2018-06-22T12:55:02Z","home_team":{"country":"Brazil","code":"BRA","goals":0},"away_team":{"country":"Costa Rica","code":"CRC","goals":0},"winner":null,"winner_code":null,"home_team_events":[],"away_team_events":[]}]')
+            #info = json.loads(requests.get('http://worldcup.sfg.io/matches/current').text)
+            info = json.loads('[{"venue":"St. Petersburg","location":"Saint Petersburg Stadium","status":"in progress","time":"half-time","fifa_id":"300331540","home_team_statistics":{"attempts_on_goal":7,"on_target":1,"off_target":6,"blocked":0,"woodwork":0,"corners":1,"offsides":3,"ball_possession":64,"pass_accuracy":91,"num_passes":359,"passes_completed":325,"distance_covered":52,"balls_recovered":20,"tackles":5,"clearances":3,"yellow_cards":0,"red_cards":0,"fouls_committed":6,"country":"Brazil"},"away_team_statistics":{"attempts_on_goal":3,"on_target":0,"off_target":3,"blocked":0,"woodwork":0,"corners":0,"offsides":2,"ball_possession":36,"pass_accuracy":74,"num_passes":167,"passes_completed":123,"distance_covered":55,"balls_recovered":14,"tackles":6,"clearances":12,"yellow_cards":0,"red_cards":0,"fouls_committed":9,"country":"Costa Rica"},"datetime":"2018-06-22T15:00:00Z","last_event_update_at":null,"last_score_update_at":"2018-06-22T12:55:02Z","home_team":{"country":"Brazil","code":"BRA","goals":0},"away_team":{"country":"Costa Rica","code":"CRC","goals":0},"winner":null,"winner_code":null,"home_team_events":[],"away_team_events":[]}]')
         except:
             print Fore.RED + 'Ops! I can\'t connect to API =\'(' 
         if not info:
