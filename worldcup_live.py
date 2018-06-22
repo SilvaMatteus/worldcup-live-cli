@@ -6,18 +6,19 @@
 # Fore: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE
 # Back: BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE, RESET.
 # Style: DIM, NORMAL, BRIGHT, RESET_ALL
-# TODO: Handle requests exceptions.
 # TODO: Remove mocks.
 # TODO: Show groups.
 
 from multiprocessing import Process, Lock
 from colorama import init, Fore, Style, Back
 from time import sleep
+from datetime import timedelta
 
 import signal
 import sys
 import requests
 import json
+import dateutil.parser
 
 NOT_RECOGNIZE = Fore.RED + 'I\'m sorry, I do not recognize this command.'
 SOCCER_BALL = u"\U000026bd"
@@ -27,6 +28,7 @@ CHECKED_BOX = u"\U00002611"
 UPDATE_TIME = 32
 ASCII_ART = '' + '╦ ╦┌─┐┬─┐┬  ┌┬┐  ╔═╗┬ ┬┌─┐  ╦  ┬┬  ┬┌─┐\n' + '║║║│ │├┬┘│   ││  ║  │ │├─┘  ║  │└┐┌┘├┤ \n' + '╚╩╝└─┘┴└─┴─┘─┴┘  ╚═╝└─┘┴    ╩═╝┴ └┘ └─┘'
 ASCII_ART += '0.1\nhttps://github.com/silvamatteus/worldcup-live-cli'
+TIME_DIFFERENCE = -6 # In hours.
 
 def print_help():
     print Fore.YELLOW + '%s%s%s%s%s' % (
@@ -74,8 +76,12 @@ def print_match(info, is_live=False):
         print 'Match Status:' + Fore.MAGENTA + ' %s' % info['status']
     else:
         print Fore.GREEN + Style.DIM + u"\U0001f557" + ' %s' % info['time']
+
     if info['datetime']:
-        print u"\U0001f557" + ' Start time: %s' % info['datetime']
+        start_time = dateutil.parser.parse(info['datetime'])
+        start_time += timedelta(TIME_DIFFERENCE)
+        print Fore.MAGENTA + u"\U0001f4c6" + ' %s' % start_time.strftime('%Y-%m-%d'),
+        print Fore.MAGENTA + u"\U0001f557" + ' %s' % start_time.strftime('%H:%M')
     
     #TODO: print start time and current time.
     # Print goals.
